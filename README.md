@@ -1,6 +1,6 @@
 # ROW Swim Club — DMARC Report Reader
 
-Fetches DMARC aggregate reports from the `postmaster@rowswimming.ca` Gmail inbox,
+Fetches DMARC aggregate reports from the `you@rowswimming.ca` Gmail inbox,
 parses the XML attachments, and prints a colour-coded summary in your terminal.
 
 No third-party dependencies — uses only Python 3 standard library.
@@ -30,7 +30,7 @@ an unauthorised server.
 Google Workspace requires an **App Password** instead of your regular password
 for IMAP access.
 
-1. Sign in to the **postmaster@rowswimming.ca** account at
+1. Sign in to the **you@rowswimming.ca** account at
    `myaccount.google.com`.
 2. Go to **Security → How you sign in to Google → 2-Step Verification**
    (enable it if not already on).
@@ -64,12 +64,12 @@ Or pass them directly on the command line (see Usage below).
 
 ```bash
 # Fetch from Gmail (credentials from environment)
-export DMARC_USER=postmaster@rowswimming.ca
+export DMARC_USER=you@rowswimming.ca
 export DMARC_PASS=your-app-password
 python3 dmarc_report.py
 
 # Pass credentials directly
-python3 dmarc_report.py --user postmaster@rowswimming.ca --password YOUR_APP_PW
+python3 dmarc_report.py --user you@rowswimming.ca --password YOUR_APP_PW
 
 # Also resolve IP addresses to hostnames (slower, requires internet)
 python3 dmarc_report.py --rdns

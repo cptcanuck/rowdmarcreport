@@ -186,18 +186,11 @@ def fetch_reports_from_gmail(
         imap.login(username, app_password)
         imap.select(mailbox)
 
-        # Search for emails with "Report Domain" subject (standard DMARC subject line)
-        # Also catch any unseen email that might be a report
-        _, msg_ids_data = imap.search(None, '(SUBJECT "Report Domain")')
+        _, msg_ids_data = imap.search(None, '(SUBJECT "Report Domain: rowswimming.ca")')
         msg_ids = msg_ids_data[0].split()
 
         if not msg_ids:
-            # Fallback: grab recent unseen emails and filter by attachment
-            _, msg_ids_data = imap.search(None, "UNSEEN")
-            msg_ids = msg_ids_data[0].split()
-
-        if not msg_ids:
-            print("No DMARC report emails found.")
+            print("No DMARC report emails found (subject: 'Report Domain: rowswimming.ca').")
             return results
 
         # Process most recent first, up to max_emails
