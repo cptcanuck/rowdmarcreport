@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Sample DMARC aggregate report in the standard RUA XML format.
+  Use this to test parsing without connecting to Gmail:
+    python3 dmarc_report.py -file sample_report.xml
+-->
+<feedback>
+  <report_metadata>
+    <org_name>Google Inc.</org_name>
+    <email>noreply-dmarc-support@google.com</email>
+    <report_id>12345678901234567890</report_id>
+    <date_range>
+      <begin>1745452800</begin>
+      <end>1745539200</end>
+    </date_range>
+  </report_metadata>
+
+  <policy_published>
+    <domain>rowswimming.ca</domain>
+    <adkim>r</adkim>
+    <aspf>r</aspf>
+    <p>quarantine</p>
+    <pct>100</pct>
+  </policy_published>
+
+  <!-- Legitimate message through Google Workspace — both aligned -->
+  <record>
+    <row>
+      <source_ip>209.85.220.41</source_ip>
+      <count>47</count>
+      <policy_evaluated>
+        <disposition>none</disposition>
+        <dkim>pass</dkim>
+        <spf>pass</spf>
+      </policy_evaluated>
+    </row>
+    <identifiers>
+      <header_from>rowswimming.ca</header_from>
+      <envelope_from>rowswimming.ca</envelope_from>
+    </identifiers>
+    <auth_results>
+      <dkim>
+        <domain>rowswimming.ca</domain>
+        <result>pass</result>
+      </dkim>
+      <spf>
+        <domain>rowswimming.ca</domain>
+        <result>pass</result>
+      </spf>
+    </auth_results>
+  </record>
+
+  <!-- Forwarded message — SPF breaks, but DKIM holds -->
+  <record>
+    <row>
+      <source_ip>66.102.8.24</source_ip>
+      <count>3</count>
+      <policy_evaluated>
+        <disposition>none</disposition>
+        <dkim>pass</dkim>
+        <spf>fail</spf>
+      </policy_evaluated>
+    </row>
+    <identifiers>
+      <header_from>rowswimming.ca</header_from>
+      <envelope_from>forwarder.example.com</envelope_from>
+    </identifiers>
+    <auth_results>
+      <dkim>
+        <domain>rowswimming.ca</domain>
+        <result>pass</result>
+      </dkim>
+      <spf>
+        <domain>forwarder.example.com</domain>
+        <result>pass</result>
+      </spf>
+    </auth_results>
+  </record>
+
+  <!-- Spoofed/failing message — neither aligned -->
+  <record>
+    <row>
+      <source_ip>198.51.100.77</source_ip>
+      <count>2</count>
+      <policy_evaluated>
+        <disposition>quarantine</disposition>
+        <dkim>fail</dkim>
+        <spf>fail</spf>
+      </policy_evaluated>
+    </row>
+    <identifiers>
+      <header_from>rowswimming.ca</header_from>
+      <envelope_from>spammer.invalid</envelope_from>
+    </identifiers>
+    <auth_results>
+      <dkim>
+        <domain>rowswimming.ca</domain>
+        <result>fail</result>
+      </dkim>
+      <spf>
+        <domain>spammer.invalid</domain>
+        <result>fail</result>
+      </spf>
+    </auth_results>
+  </record>
+</feedback>

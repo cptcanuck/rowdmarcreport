@@ -1,0 +1,4 @@
+.env
+xml/
+__pycache__/
+*.pyc
